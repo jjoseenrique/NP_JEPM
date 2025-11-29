@@ -16,9 +16,9 @@ This repository contains all R scripts and documentation necessary to reproduce 
     ├── 2.-phenotype_analysis_NP.R             # Phenotype data processing and heatmap visualization
     ├── 3.-plsda_biplot_NP.R                   # PLS-DA multivariate analysis and biplots
     ├── 4.-permanova_NP.R                      # PERMANOVA: garden and genotype effects
-    ├── 5.-ICC-PCA-DBRDA_NP.R                  # ICC calculation, PCA, and db-RDA analysis
-    ├── 6.-ICC_latitude_regression_NP.R        # Regression: ICC vs latitude with Benjamini-Hochberg correction
-    ├── 7.-PERMANOVA-DBRDA_Plasticity_NP.R    # Variance partitioning: climatic vs garden effects
+    ├── 5.-PERMANOVA-DBRDA_Plasticity_NP.R    # Variance partitioning: climatic vs garden effects
+    ├── 6.-ICC-PCA-DBRDA_NP.R                  # ICC calculation, PCA, and db-RDA analysis
+    ├── 7.-ICC_latitude_regression_NP.R        # Regression: ICC vs latitude with Benjamini-Hochberg correction    
     └── README_Scripts.md                      # Detailed script descriptions
 
 ```
@@ -158,81 +158,7 @@ Both datasets are filtered to **common samples** (N = 581) with complete data ac
 
 ---
 
-### 5. `ICC-PCA-DBRDA_NP.R`
-**Purpose:** Quantify trait-specific plasticity via ICC, perform dimensionality reduction, and test latitudinal structuring
-
-**Key Steps:**
-
-#### Part A: ICC Calculation
-- Fit linear mixed models for each trait within each genotype:
-  ```
-  Trait ~ 1 + (1|GARDENID)
-  ```
-- Calculate ICC as: var(GARDENID) / [var(GARDENID) + var(residual)]
-- Produces ICC matrix (15 genotypes × 49 traits)
-
-**ICC Interpretation:**
-- ICC = 0: No plasticity (trait identical across gardens)
-- ICC = 1: Maximum plasticity (all variation is environmental)
-- Values represent proportion of trait variance attributable to environment
-
-#### Part B: PCA on ICC Values
-- Perform PCA on full ICC matrix (scale.unit = FALSE)
-- Select top 20 traits by PC1 loading magnitude
-- Generate biplots: All traits + Top 20 traits
-- Map trait IDs to biological names
-
-#### Part C: db-RDA Analysis (ICC vs Latitude)
-- Calculate Euclidean distance matrix from ICC values
-- Test: ICC distance matrix ~ Latitude
-- Model: `capscale(dist_icc ~ Latitude, distance = "euclidean")`
-- Adjusted R², F-statistic, p-value (9,999 permutations)
-
-**Outputs:**
-- ICC matrix (15 genotypes × 49 traits)
-- PCA biplots and explained variance
-- db-RDA results with latitude structuring test
-- Trait legend (ID ↔ original name ↔ pretty name)
-
-**Key Functions:**
-- `lme4::lmer()` for mixed model fitting
-- `lme4::VarCorr()` for variance component extraction
-- `FactoMineR::PCA()` and `factoextra::fviz_pca_biplot()`
-- `vegan::vegdist()`, `vegan::capscale()`, `vegan::anova.cca()`
-
----
-
-### 6. `ICC_latitude_regression_NP.R`
-**Purpose:** Test for latitudinal structuring of individual trait plasticity
-
-**Key Steps:**
-- Linear regression for each of 49 traits: ICC ~ Latitude
-- Calculate Pearson correlation (r) and p-values
-- Apply Benjamini-Hochberg correction for multiple testing
-- Generate scatter plots with regression lines, statistics, confidence intervals
-- Display results ordered by adjusted p-value
-- Create full grid of all 49 traits and selection of key traits
-
-**Outputs:**
-- Scatter plots for all 49 traits (grid visualization)
-- Selection grid (3×3) with key traits
-- Summary statistics table (trait, r, p_raw, p_BH, significance)
-- Figure highlighting significant traits (p_BH < 0.05)
-
-**Key Statistics:**
-- Raw p-values from individual regressions
-- Benjamini-Hochberg corrected p-values
-- R² and Pearson correlation coefficients
-- F-statistics for each trait
-
-**Interpretation:**
-- Positive r: Plasticity increases toward northern (higher latitude) genotypes
-- Negative r: Plasticity decreases toward northern genotypes
-- p_BH < 0.05: Significant latitudinal structuring after multiple testing correction
-
----
-
-### 7. `PERMANOVA-DBRDA_Plasticity_NP.R`
+### 5. `PERMANOVA-DBRDA_Plasticity_NP.R`
 **Purpose:** Partition phenotypic variance by immediate environment vs. climatic origin using separate trait groups
 
 **Design:**
@@ -296,6 +222,80 @@ Both datasets are filtered to **common samples** (N = 581) with complete data ac
 
 ---
 
+### 6. `ICC-PCA-DBRDA_NP.R`
+**Purpose:** Quantify trait-specific plasticity via ICC, perform dimensionality reduction, and test latitudinal structuring
+
+**Key Steps:**
+
+#### Part A: ICC Calculation
+- Fit linear mixed models for each trait within each genotype:
+  ```
+  Trait ~ 1 + (1|GARDENID)
+  ```
+- Calculate ICC as: var(GARDENID) / [var(GARDENID) + var(residual)]
+- Produces ICC matrix (15 genotypes × 49 traits)
+
+**ICC Interpretation:**
+- ICC = 0: No plasticity (trait identical across gardens)
+- ICC = 1: Maximum plasticity (all variation is environmental)
+- Values represent proportion of trait variance attributable to environment
+
+#### Part B: PCA on ICC Values
+- Perform PCA on full ICC matrix (scale.unit = FALSE)
+- Select top 20 traits by PC1 loading magnitude
+- Generate biplots: All traits + Top 20 traits
+- Map trait IDs to biological names
+
+#### Part C: db-RDA Analysis (ICC vs Latitude)
+- Calculate Euclidean distance matrix from ICC values
+- Test: ICC distance matrix ~ Latitude
+- Model: `capscale(dist_icc ~ Latitude, distance = "euclidean")`
+- Adjusted R², F-statistic, p-value (9,999 permutations)
+
+**Outputs:**
+- ICC matrix (15 genotypes × 49 traits)
+- PCA biplots and explained variance
+- db-RDA results with latitude structuring test
+- Trait legend (ID ↔ original name ↔ pretty name)
+
+**Key Functions:**
+- `lme4::lmer()` for mixed model fitting
+- `lme4::VarCorr()` for variance component extraction
+- `FactoMineR::PCA()` and `factoextra::fviz_pca_biplot()`
+- `vegan::vegdist()`, `vegan::capscale()`, `vegan::anova.cca()`
+
+---
+
+### 7. `ICC_latitude_regression_NP.R`
+**Purpose:** Test for latitudinal structuring of individual trait plasticity
+
+**Key Steps:**
+- Linear regression for each of 49 traits: ICC ~ Latitude
+- Calculate Pearson correlation (r) and p-values
+- Apply Benjamini-Hochberg correction for multiple testing
+- Generate scatter plots with regression lines, statistics, confidence intervals
+- Display results ordered by adjusted p-value
+- Create full grid of all 49 traits and selection of key traits
+
+**Outputs:**
+- Scatter plots for all 49 traits (grid visualization)
+- Selection grid (3×3) with key traits
+- Summary statistics table (trait, r, p_raw, p_BH, significance)
+- Figure highlighting significant traits (p_BH < 0.05)
+
+**Key Statistics:**
+- Raw p-values from individual regressions
+- Benjamini-Hochberg corrected p-values
+- R² and Pearson correlation coefficients
+- F-statistics for each trait
+
+**Interpretation:**
+- Positive r: Plasticity increases toward northern (higher latitude) genotypes
+- Negative r: Plasticity decreases toward northern genotypes
+- p_BH < 0.05: Significant latitudinal structuring after multiple testing correction
+
+---
+
 ## Execution Instructions
 
 ### Step 1: Prepare Your Environment
@@ -319,10 +319,11 @@ file.exists("data/Table_S3.xlsx")
 source("scripts/1.-metabolite_analysis_NP.R")      
 source("scripts/2.-phenotype_analysis_NP.R")       
 source("scripts/3.-plsda_biplot_NP.R")             
-source("scripts/4.-permanova_NP.R")                
-source("scripts/5.-ICC-PCA-DBRDA_NP.R")            
-source("scripts/6.-ICC_latitude_regression_NP.R")  
-source("scripts/7.-PERMANOVA-DBRDA_Plasticity_NP.R") 
+source("scripts/4.-permanova_NP.R")
+source("scripts/5.-PERMANOVA-DBRDA_Plasticity_NP.R")                 
+source("scripts/6.-ICC-PCA-DBRDA_NP.R")            
+source("scripts/7.-ICC_latitude_regression_NP.R")  
+
 ```
 
 ## Reproducibility Notes
@@ -379,9 +380,7 @@ source("scripts/7.-PERMANOVA-DBRDA_Plasticity_NP.R")
 
 ## Citation
 
-If you use these scripts, please cite:
-
-> Pérez-Martín JE, Batsleer F, Vandegehuchte ML, et al. (Year). Phenotypic plasticity and local adaptation in *Fragaria vesca* along a European latitudinal gradient. *New Phytologist*, XX(X), XXX-XXX.
+>To be determined
 
 And reference this repository and data archive:
 
