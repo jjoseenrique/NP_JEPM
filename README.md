@@ -12,13 +12,13 @@ This repository contains all R scripts and documentation necessary to reproduce 
 │   ├── Table_S2.xlsx                          # Raw metabolomic data (36 metabolites)
 │   └── Table_S3.xlsx                          # Raw phenotypic data (13 traits)
 ├── scripts/
-    ├── 1.-metabolite_analysis_NP.R            # Metabolite data processing and heatmap visualization
-    ├── 2.-phenotype_analysis_NP.R             # Phenotype data processing and heatmap visualization
-    ├── 3.-plsda_biplot_NP.R                   # PLS-DA multivariate analysis and biplots
-    ├── 4.-permanova_NP.R                      # PERMANOVA: garden and genotype effects
-    ├── 5.-PERMANOVA-DBRDA_Plasticity_NP.R    # Variance partitioning: climatic vs garden effects
-    ├── 6.-ICC-PCA-DBRDA_NP.R                  # ICC calculation, PCA, and db-RDA analysis
-    ├── 7.-ICC_latitude_regression_NP.R        # Regression: ICC vs latitude with Benjamini-Hochberg correction    
+    ├── 1.-metabolite_analysis.R            # Metabolite data processing and heatmap visualization
+    ├── 2.-phenotype_analysis.R             # Phenotype data processing and heatmap visualization
+    ├── 3.-plsda_biplot.R                   # PLS-DA multivariate analysis and biplots
+    ├── 4.-permanova.R                      # PERMANOVA: garden and genotype effects
+    ├── 5.-PERMANOVA-DBRDA_Plasticity.R    # Variance partitioning: climatic vs garden effects
+    ├── 6.-ICC-PCA-DBRDA.R                  # ICC calculation, PCA, and db-RDA analysis
+    ├── 7.-ICC_latitude_regression.R        # Regression: ICC vs latitude with Benjamini-Hochberg correction    
     └── README_Scripts.md                      # Detailed script descriptions
 
 ```
@@ -71,7 +71,7 @@ Both datasets are filtered to **common samples** (N = 581) with complete data ac
 
 ## Scripts Overview
 
-### 1. `metabolite_analysis_NP.R`
+### 1. `metabolite_analysis.R`
 **Purpose:** Data import, normalization, and exploratory analysis of metabolite data (Table_S2)
 
 **Key Steps:**
@@ -94,7 +94,7 @@ Both datasets are filtered to **common samples** (N = 581) with complete data ac
 
 ---
 
-### 2. `phenotype_analysis_NP.R`
+### 2. `phenotype_analysis.R`
 **Purpose:** Data import, normalization, and exploratory analysis of phenotypic data (Table_S3)
 
 **Key Steps:**
@@ -114,7 +114,7 @@ Both datasets are filtered to **common samples** (N = 581) with complete data ac
 
 ---
 
-### 3. `plsda_biplot_NP.R`
+### 3. `plsda_biplot.R`
 **Purpose:** Discriminate sample groups by garden-year combinations using multivariate analysis
 
 **Key Steps:**
@@ -137,7 +137,7 @@ Both datasets are filtered to **common samples** (N = 581) with complete data ac
 
 ---
 
-### 4. `permanova_NP.R`
+### 4. `permanova.R`
 **Purpose:** Test for significant effects of GARDEN_ID, genotype, and their interaction on combined metabolite + phenotype data
 
 **Models Tested:**
@@ -158,7 +158,7 @@ Both datasets are filtered to **common samples** (N = 581) with complete data ac
 
 ---
 
-### 5. `PERMANOVA-DBRDA_Plasticity_NP.R`
+### 5. `PERMANOVA-DBRDA_Plasticity.R`
 **Purpose:** Partition phenotypic variance by immediate environment vs. climatic origin using separate trait groups
 
 **Design:**
@@ -222,7 +222,7 @@ Both datasets are filtered to **common samples** (N = 581) with complete data ac
 
 ---
 
-### 6. `ICC-PCA-DBRDA_NP.R`
+### 6. `ICC-PCA-DBRDA.R`
 **Purpose:** Quantify trait-specific plasticity via ICC, perform dimensionality reduction, and test latitudinal structuring
 
 **Key Steps:**
@@ -266,7 +266,7 @@ Both datasets are filtered to **common samples** (N = 581) with complete data ac
 
 ---
 
-### 7. `ICC_latitude_regression_NP.R`
+### 7. `ICC_latitude_regression.R`
 **Purpose:** Test for latitudinal structuring of individual trait plasticity
 
 **Key Steps:**
@@ -316,13 +316,13 @@ file.exists("data/Table_S3.xlsx")
 # Scripts 1-3 are exploratory and independent
 # Scripts 4-7 build on common data preprocessing but can run independently
 
-source("scripts/1.-metabolite_analysis_NP.R")      
-source("scripts/2.-phenotype_analysis_NP.R")       
-source("scripts/3.-plsda_biplot_NP.R")             
-source("scripts/4.-permanova_NP.R")
-source("scripts/5.-PERMANOVA-DBRDA_Plasticity_NP.R")                 
-source("scripts/6.-ICC-PCA-DBRDA_NP.R")            
-source("scripts/7.-ICC_latitude_regression_NP.R")  
+source("scripts/1.-metabolite_analysis.R")      
+source("scripts/2.-phenotype_analysis.R")       
+source("scripts/3.-plsda_biplot.R")             
+source("scripts/4.-permanova.R")
+source("scripts/5.-PERMANOVA-DBRDA_Plasticity.R")                 
+source("scripts/6.-ICC-PCA-DBRDA.R")            
+source("scripts/7.-ICC_latitude_regression.R")  
 
 ```
 
