@@ -384,7 +384,7 @@ source("scripts/7.-ICC_latitude_regression.R")
 
 And reference this repository and data archive:
 
-> Reproducible code and data available at: https://github.com/jjoseenrique/NP_JEPM
+> Reproducible code and data available at: https://github.com/jjoseenrique/PP_JEPM
 > 
 > Raw data deposited in Zenodo: https://doi.org/[ZENODO_DOI]
 
